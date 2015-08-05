@@ -1,0 +1,112 @@
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  </head>
+
+  <body>
+    <p>
+      <!-- dev: ca_6HALH5MwR7tfdRfqYn4m3oMbBOL3Twdb -->
+      <a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_6HALH5MwR7tfdRfqYn4m3oMbBOL3Twdb&scope=read_write"
+         class="stripe-connect">
+        <span>Connect with Stripe Dev</span>
+      </a>
+    </p>
+
+    <p>
+      <!-- prod: ca_6HALbTPdKgkQlTgi0l3u04fIiJJ7vMmW -->
+      <a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_6HALbTPdKgkQlTgi0l3u04fIiJJ7vMmW&scope=read_write"
+         class="stripe-connect">
+        <span>Connect with Stripe Prod</span>
+      </a>
+    </p>
+       
+    <div>
+      Charge
+    <form action="/makeCharge" method="POST">
+      <script
+         src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+         data-key="pk_test_dgBXNaBQQwVRbJbtux2XbsZx"
+         data-image="/img/documentation/checkout/marketplace.png"
+         data-name="Stripe.com"
+         data-description="2 widgets"
+         data-amount="2000">
+      </script>
+    </form>
+    </div> 
+    
+    <div>
+    Customer
+    <form action="/makeCustomer" method="POST">
+      <script
+         src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+         data-key="pk_test_dgBXNaBQQwVRbJbtux2XbsZx"
+         data-image="/img/documentation/checkout/marketplace.png"
+         data-name="Stripe.com"
+         data-description="2 widgets"
+         data-amount="2000">
+      </script>
+    </form>
+    </div>
+
+    <div>
+      Debug request
+    <form action="/debugRequest" method="POST">
+      <script
+         src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+         data-key="pk_test_dgBXNaBQQwVRbJbtux2XbsZx"
+         data-image="/img/documentation/checkout/marketplace.png"
+         data-name="Stripe.com"
+         data-description="2 widgets"
+         data-amount="2000">
+      </script>
+    </form>
+    </div>
+
+    <div>
+      Custom
+
+      <script src="https://checkout.stripe.com/checkout.js"></script>
+      <form id="custom-charge" action="/makeCharge" method="POST">
+      <input type="hidden" name="token" id="hidden-token" value="">
+      <input type="hidden" name="email" id="hidden-email" value="">
+      <input type="hidden" name="card" id="hidden-card" value="">      
+      <input type="hidden" name="cost" id="hidden-cost" value="">      
+      <button id="customButton">Purchase</button>
+      </form>
+
+<script>
+  var handler = StripeCheckout.configure({
+    key: 'pk_test_dgBXNaBQQwVRbJbtux2XbsZx',
+    image: '',
+    token: function(token) {
+        $("#hidden-token").val(token.id);
+        $("#hidden-email").val(token.email);
+        $("#hidden-card").val(token.card.id);    
+        $("#hidden-cost").val(200);
+        $("#custom-charge").get(0).submit();  
+    }
+  });
+
+  $(document).on("DOMNodeRemoved", ".stripe_checkout_app", close);
+  function close() {
+     console.log("closed closed!!");
+  }
+  
+  $('#customButton').on('click', function(e) {
+    // Open Checkout with further options
+    handler.open({
+      name: 'Stripe.com',
+      description: '2 widgets',
+      amount: 2000
+    });
+    e.preventDefault();
+  });
+
+  // Close Checkout on page navigation
+  $(window).on('popstate', function() {
+    handler.close();
+  });
+</script>
+    </div>
+  </body>
+</html>

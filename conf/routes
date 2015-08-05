@@ -1,0 +1,8 @@
+GET             /                          controllers.Assets.at(path="/public", file="index.html")
+GET             /assets/*file              controllers.Assets.at(path="/public", file)
+POST            /debugRequest              @controllers.Application.printRequest
+POST            /makeCharge                @controllers.Application.makeCharge
+POST            /makeCustomer              @controllers.Application.makeCustomer
+
+POST            /connectOauth              @controllers.Application.connectOauth(code: String)
+GET             /connectOauth              @controllers.Application.connectOauth(code: String)
